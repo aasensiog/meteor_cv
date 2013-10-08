@@ -10,8 +10,6 @@
 
 <template name='index'>
 {{#if currentUser}}
-	{{loginButtons}}
-	<p>Welcome {{currentUser.profile.name}}</p>
 	{{> map}}
 {{else}}
 	{{loginButtons}}
@@ -19,9 +17,10 @@
 </template>
 
 <template name='map'>
-<div class='row'>
-	<div id='chart_div' class='span12'>Loading map, please wait...</div>
-</div>
+    <p>Welcome {{userData}}</p>
+    <div class='row'>
+        <div id='chart_div' class='span12'>Loading, please wait...</div>
+    </div>
 </template>
 
 
