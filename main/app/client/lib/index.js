@@ -1,5 +1,6 @@
 if (Meteor.isClient) {
-	var chart = null,
+    /*
+	var map,
 		options = {
 		  keepAspectRatio: true,
 		  datalessRegionColor: 'PaleGoldenrod'
@@ -28,12 +29,43 @@ if (Meteor.isClient) {
 		  }
 		},
 		drawRegionsMap = function() {
-			chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
-			// register the 'select' event handler
+            map = new AmCharts.AmMap();
+            //map.pathToImages = "http://www.ammap.com/lib/images/";
+            map.panEventsEnabled = true;
+            map.backgroundColor = "#666666";
+            map.backgroundAlpha = 1;
+        
+            var dataProvider = {
+                mapVar: AmCharts.maps.worldHigh,
+                getAreasFromMap: true,
+                areas: []
+            };
+        
+            map.dataProvider = dataProvider;
+        
+            map.areasSettings = {
+                autoZoom: false,
+                selectable:true,
+                color: "#CDCDCD",
+                colorSolid: "#5EB7DE",
+                selectedColor: "#5EB7DE",
+                outlineColor: "#666666",
+                rollOverColor: "#88CAE7",
+                rollOverOutlineColor: "#FFFFFF"
+            };
+            map.addListener('clickMapObject', function (event) {
+              //console.debug(event);
+              var obj = event.mapObject.id;
+              updateMap(true);
+            });
+        
+            map.write("mapdiv");
+            /*
 			google.visualization.events.addListener(chart, 'regionClick', function (region) {
 			// GeoChart selections return an array of objects with a row property; no column information
 				addAndUpdateChart(region.region);
 			});
+            
 			var user = Meteor.user(),
                 arr = user && user.profile && user.profile.countries;
             if (arr && arr.length > 0) {
@@ -42,7 +74,6 @@ if (Meteor.isClient) {
 				saveOnDB(countriesVisited);
 			}
 			
-			chart.draw(google.visualization.arrayToDataTable(doMap(countriesVisited)), options);
 		},
 		saveOnDB = function(countriesVisited) {
             var that = this,
@@ -59,12 +90,83 @@ if (Meteor.isClient) {
 			}
 		};
     
-    Template.map.userData = function() {
+    Template.index.userData = function() {
+        drawRegionsMap();
         return Meteor.user().emails[0].address;
     };
+    */
+
     
-    google.load('visualization', '1', {'packages': ['geochart']});
-    google.setOnLoadCallback(drawRegionsMap);
+    
+    
+    
+    //-------------------------------------------------------------------//
+    //-----------------------LOGIN & REGISTER----------------------------//
+    //-------------------------------------------------------------------//
+    
+    Template.data.userData = function() {
+        return {name: Meteor.user().profile.name};
+    };
+    
+    Template.data.events(
+    {
+        'click #logout' : function(event) {
+            return Meteor.logout();
+        }
+    }
+    );
+    
+    Template.login.events({
+
+    'submit #login-form' : function(e, t){
+      e.preventDefault();
+      // retrieve the input field values
+      var email = t.find('#login-email').value,
+          password = t.find('#login-password').value;
+
+        // Trim and validate your fields here.... 
+
+        // If validation passes, supply the appropriate fields to the
+        // Meteor.loginWithPassword() function.
+        Meteor.loginWithPassword(email, password, function(err){
+        if (err)
+          // The user might not have been found, or their passwword
+          // could be incorrect. Inform the user that their
+          // login attempt has failed. 
+            alert('login fail');
+        else
+          // The user has been logged in.
+            alert('login ok');
+      });
+         return false; 
+      }
+    });
+        
+    Template.register.events({
+    'submit #register-form' : function(e, t) {
+      e.preventDefault();
+      var email = t.find('#account-email').value,
+          password = t.find('#account-password').value,
+          name = t.find('#account-name').value;
+
+        // Trim and validate the input
+
+      Accounts.createUser({email: email, password : password, profile: {name: name}}, function(err){
+          if (err) {
+            alert('register fail');
+          } else {
+              alert('register ok');
+            // Success. Account has been created and the user
+            // has logged in successfully. 
+          }
+
+        });
+
+      return false;
+    }
+  });
+        
+        
 
 }
 

@@ -1,26 +1,52 @@
 <head>
-	<title>My world</title>
+	<title>My world - custom login</title>
 </head>
 
 <body>
 	<div class='container'>
-    	{{> index}}
+        {{#if currentUser}}
+            {{> data}}
+        {{else}}
+            {{> loginAndRegister}}
+        {{/if}}
 	</div>
 </body>
 
-<template name='index'>
-{{#if currentUser}}
-	{{> map}}
-{{else}}
-	{{loginButtons}}
-{{/if}}
-</template>
-
-<template name='map'>
-    <p>Welcome {{userData}}</p>
-    <div class='row'>
-        <div id='chart_div' class='span12'>Loading, please wait...</div>
+<template name='loginAndRegister'>
+    <div id='loginPage' class='row'>
+        <div class='span5 text-right'>
+            {{> login}}
+        </div>
+        <div class='span1 text-center'></div>
+        <div class='span5 text-left'>
+            {{> register}}
+        </div>    
     </div>
 </template>
 
+<template name='data'>
+    <p>Hello {{userData.name}}</p>
+    <button id='logout' class='btn btn-inverse'>Salir</button>
+</template>
 
+<template name='login'>
+    <form id="login-form" action="action">
+        <div>
+            <input type="email" id="login-email" placeholder='Correo'/> <br />
+            <input type="password" id="login-password" placeholder='Contraseña'/> <br />
+            <input type="submit" id="login-button" value="Entrar" class='btn btn-primary' /> <br />
+            <p class='muted'>¿No tienes una cuenta? Créate una <i class="icon-chevron-right"></i></p>
+        </div>
+    </form>
+</template>
+
+<template name='register'>
+    <form id="register-form" action="action">
+            <div>
+                <input type="text" id="account-name" placeholder='Nombre'/> <br />
+                <input type="email" id="account-email" placeholder='Correo'/> <br />
+                <input type="password" id="account-password" placeholder='Contraseña'/> <br />
+                <input type="submit" id="create-account" value="Crear una cuenta" class='btn btn-info' />
+            </div>
+        </form>
+</template>
