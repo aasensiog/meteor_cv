@@ -13,6 +13,8 @@
 </body>
 
 <template name='loginAndRegister'>
+    <h1>Tu mundo!</h1>
+    <p class="lead">¿Que lugares has visitado hasta el dia de hoy? Márcalos y compártelos!</p>
     <div id='loginPage' class='row'>
         <div class='span5 text-right'>
             {{> login}}
@@ -25,11 +27,14 @@
 </template>
 
 <template name='data'>
-    <p>Hello {{userData.name}}</p>
-    <button id='logout' class='btn btn-inverse'>Salir</button>
+    <span>Hola {{userData.name}}</span>
+    <button id='logout' class='btn btn-inverse btn-small'>Salir</button>
+    <br />
+    <div id='map'>Cargando mapa...</div>
 </template>
 
 <template name='login'>
+    <h3>Entra:</h3>
     <form id="login-form" action="action">
         <div>
             <input type="email" id="login-email" placeholder='Correo'/> <br />
@@ -41,6 +46,7 @@
 </template>
 
 <template name='register'>
+    <h3>:Regístrate</h3>
     <form id="register-form" action="action">
             <div>
                 <input type="text" id="account-name" placeholder='Nombre'/> <br />

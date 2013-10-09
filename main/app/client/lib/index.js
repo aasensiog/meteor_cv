@@ -108,6 +108,9 @@ if (Meteor.isClient) {
         return {name: Meteor.user().profile.name};
     };
     
+    Template.data.rendered = function() {
+        $('#map').vectorMap({map: 'world_merc_en'});
+    };
     Template.data.events(
     {
         'click #logout' : function(event) {
