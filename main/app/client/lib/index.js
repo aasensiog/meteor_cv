@@ -12,7 +12,7 @@ if (Meteor.isClient) {
     };
 
     var updateMap = function() {
-      jQuery('#map').vectorMap('set', 'colors', generateColors(countries));
+      $('#map').vectorMap('set', 'colors', generateColors(countries));
     };
 
     var addRegion = function(countryCode) {
@@ -56,7 +56,7 @@ if (Meteor.isClient) {
         countries = Meteor.user().profile.countries || [];
 
         if (!map) {
-          map = jQuery('#map').vectorMap({
+          map = $('#map').vectorMap({
             map: 'world_en',
             backgroundColor: '#333333',
             color: '#ffffff',
@@ -67,7 +67,8 @@ if (Meteor.isClient) {
             scaleColors: ['#C8EEFF', '#006491'],
             normalizeFunction: 'polynomial',
             colors: generateColors(countries),
-            onRegionClick: function(element, code, region) {
+            onRegionClick: function(event, code, region) {
+              event.preventDefault();
               addRegion(code);
             }
           });
@@ -75,13 +76,11 @@ if (Meteor.isClient) {
 
     };
 
-    Template.data.events(
-      {
-          'click #logout' : function(event) {
-              return Meteor.logout();
-          }
+    Template.data.events({
+      'click #logout' : function(event) {
+          return Meteor.logout();
       }
-    );
+    });
     
     Template.login.events({
 
@@ -92,10 +91,11 @@ if (Meteor.isClient) {
           password = t.find('#login-password').value;
 
         Meteor.loginWithPassword(email, password, function(err){
-        if (err)
+        if (err) {
             alert('login fail');
-        else
+        } else {
             alert('login ok');
+        }
       });
          return false; 
       }
@@ -119,6 +119,13 @@ if (Meteor.isClient) {
         });
 
       return false;
+    }
+  });
+
+  $("#tags").autocomplete({
+    source: Meteor.availableCountries,
+    select: function( event, ui ) {
+      addRegion(ui.item.value.toLowerCase());
     }
   });
 
