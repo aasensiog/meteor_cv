@@ -29,12 +29,27 @@
 <template name='data'>
     <span>Hola {{userData.name}}</span>
     <button id='logout' class='btn btn-inverse btn-small'>Salir</button>
+    
     <div class="ui-widget">
       <label for="tags"></label>
       <input id="tags" />
     </div>
     <br />
     <br />
+    {{> map}}
+    {{> countriesList}}
+</template>
+
+<template name='countriesList'>
+    <h3>Lista</h3>
+    <ul class='list-group'>
+    {{#each list}}
+        <li class='list-group-item'>{{country}}</li>
+    {{/each}}
+    </ul>
+</template>
+
+<template name='map'>
     <div id='map'>Cargando mapa...</div>
 </template>
 

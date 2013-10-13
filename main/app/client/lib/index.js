@@ -53,6 +53,16 @@ if (Meteor.isClient) {
     };
     
     Template.data.rendered = function() {
+        $('#tags').autocomplete({
+          source: Meteor.availableCountries,
+          select: function( event, ui ) {
+            addRegion(ui.item.value.toLowerCase());
+            $('#tags').val('');
+          }
+        });
+    };
+
+    Template.map.rendered = function() {
         countries = Meteor.user().profile.countries || [];
 
         if (!map) {
@@ -73,7 +83,6 @@ if (Meteor.isClient) {
             }
           });
         }
-
     };
 
     Template.data.events({
@@ -81,6 +90,17 @@ if (Meteor.isClient) {
           return Meteor.logout();
       }
     });
+
+    Template.countriesList.list = function() {
+      var countries = Meteor.user().profile.countries,
+          aux = [];
+      $.map(countries, function(item, index) {
+          aux.push({
+            country: _.findWhere(Meteor.availableCountries, {value: item.toUpperCase()}).label
+          });
+      });
+      return aux;
+    };
     
     Template.login.events({
 
@@ -119,13 +139,6 @@ if (Meteor.isClient) {
         });
 
       return false;
-    }
-  });
-
-  $("#tags").autocomplete({
-    source: Meteor.availableCountries,
-    select: function( event, ui ) {
-      addRegion(ui.item.value.toLowerCase());
     }
   });
 
